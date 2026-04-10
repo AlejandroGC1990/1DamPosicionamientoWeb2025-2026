@@ -29,21 +29,32 @@ const DetallePersonaje = () => {
       <Link to="/personajes" style={{ color: "blue", textDecoration: "none" }}>
         ⬅ Volver a Personajes
       </Link>
+
+      {/* Verificamos que existan las propiedades de Jikan */}
       <h1>{data.name}</h1>
+      <img
+        src={data.images?.jpg?.image_url}
+        alt={data.name}
+        style={{ width: "200px", borderRadius: "8px" }}
+      />
+
       <div
-        style={{ background: "#f4f4f4", padding: "2rem", borderRadius: "8px" }}
+        style={{
+          background: "#f4f4f4",
+          padding: "2rem",
+          borderRadius: "8px",
+          marginTop: "1rem",
+        }}
       >
         <p>
-          <strong>Recompensa:</strong> {data.bounty || "Desconocida"}
+          <strong>Nombre Japonés:</strong> {data.name_kanji || "???"}
         </p>
         <p>
-          <strong>Puesto:</strong> {data.job || "No especificado"}
+          <strong>Favoritos (MAL):</strong> {data.favorites || "0"}
         </p>
-        <p>
-          <strong>Tamaño:</strong> {data.size || "???"}
-        </p>
-        <p>
-          <strong>Estado:</strong> {data.status || "???"}
+        <p style={{ whiteSpace: "pre-line" }}>
+          <strong>Biografía:</strong>{" "}
+          {data.about || "Sin descripción disponible."}
         </p>
       </div>
     </div>

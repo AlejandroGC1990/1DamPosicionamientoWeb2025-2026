@@ -1,11 +1,14 @@
 import { Routes, Route, Link } from "react-router-dom";
+// Imports de páginas principales
 import Home from "./pages/Home";
-// import Personajes from "./pages/Personajes";
-// import DetallePersonaje from "./pages/DetallePersonaje";
-// import Tripulaciones from "./pages/Tripulaciones";
-// import DetalleTripulacion from "./pages/DetalleTripulacion";
-// import Frutas from "./pages/Frutas";
-// import DetalleFruta from "./pages/DetalleFruta";
+import Personajes from "./pages/Personajes";
+import Galeria from "./pages/Galeria"; // Corregida la G mayúscula
+import Frutas from "./pages/Frutas";
+
+// Imports de páginas de detalle
+import DetallePersonaje from "./pages/DetallePersonaje";
+import DetalleGaleria from "./pages/DetalleGaleria"; // Coincide con tu lista de archivos
+import DetalleFruta from "./pages/DetalleFruta";
 
 function App() {
   return (
@@ -28,11 +31,8 @@ function App() {
         >
           Personajes
         </Link>
-        <Link
-          to="/tripulaciones"
-          style={{ color: "#fff", textDecoration: "none" }}
-        >
-          Tripulaciones
+        <Link to="/galeria" style={{ color: "#fff", textDecoration: "none" }}>
+          Galería
         </Link>
         <Link to="/frutas" style={{ color: "#fff", textDecoration: "none" }}>
           Frutas
@@ -43,14 +43,14 @@ function App() {
         <Routes>
           {/* Rutas Principales */}
           <Route path="/" element={<Home />} />
-          {/* <Route path="/personajes" element={<Personajes />} />
-          <Route path="/tripulaciones" element={<Tripulaciones />} />
-          <Route path="/frutas" element={<Frutas />} /> */}
+          <Route path="/personajes" element={<Personajes />} />
+          <Route path="/galeria" element={<Galeria />} />
+          <Route path="/frutas" element={<Frutas />} />
 
-          {/* RUTAS DINÁMICAS (El :id captura el número o texto de la URL) */}
-          {/* <Route path="/personajes/:id" element={<DetallePersonaje />} />
-          <Route path="/tripulaciones/:id" element={<DetalleTripulacion />} />
-          <Route path="/frutas/:id" element={<DetalleFruta />} /> */}
+          {/* RUTAS DINÁMICAS */}
+          <Route path="/personajes/:id" element={<DetallePersonaje />} />
+          <Route path="/galeria/:id" element={<DetalleGaleria />} />
+          <Route path="/frutas/:id" element={<DetalleFruta />} />
         </Routes>
       </main>
     </div>
