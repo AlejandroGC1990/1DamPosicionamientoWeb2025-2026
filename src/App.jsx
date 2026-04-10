@@ -1,11 +1,11 @@
 import { Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
-import Personajes from "./pages/Personajes";
-import DetallePersonaje from "./pages/DetallePersonaje";
-import Tripulaciones from "./pages/Tripulaciones";
-import DetalleTripulacion from "./pages/DetalleTripulacion";
-import Frutas from "./pages/Frutas";
-import DetalleFruta from "./pages/DetalleFruta";
+// import Personajes from "./pages/Personajes";
+// import DetallePersonaje from "./pages/DetallePersonaje";
+// import Tripulaciones from "./pages/Tripulaciones";
+// import DetalleTripulacion from "./pages/DetalleTripulacion";
+// import Frutas from "./pages/Frutas";
+// import DetalleFruta from "./pages/DetalleFruta";
 
 function App() {
   return (
@@ -43,14 +43,14 @@ function App() {
         <Routes>
           {/* Rutas Principales */}
           <Route path="/" element={<Home />} />
-          <Route path="/personajes" element={<Personajes />} />
+          {/* <Route path="/personajes" element={<Personajes />} />
           <Route path="/tripulaciones" element={<Tripulaciones />} />
-          <Route path="/frutas" element={<Frutas />} />
+          <Route path="/frutas" element={<Frutas />} /> */}
 
           {/* RUTAS DINÁMICAS (El :id captura el número o texto de la URL) */}
-          <Route path="/personajes/:id" element={<DetallePersonaje />} />
+          {/* <Route path="/personajes/:id" element={<DetallePersonaje />} />
           <Route path="/tripulaciones/:id" element={<DetalleTripulacion />} />
-          <Route path="/frutas/:id" element={<DetalleFruta />} />
+          <Route path="/frutas/:id" element={<DetalleFruta />} /> */}
         </Routes>
       </main>
     </div>

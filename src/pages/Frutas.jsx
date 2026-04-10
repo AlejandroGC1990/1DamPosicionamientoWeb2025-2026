@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPersonajes } from "../services/api";
+import { getFrutas } from "../services/api";
 
-const Personajes = () => {
+const Frutas = () => {
   const [lista, setLista] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDatos = async () => {
       try {
-        const data = await getPersonajes();
+        const data = await getFrutas();
         setLista(data);
       } catch (error) {
         console.error(error);
@@ -20,11 +20,11 @@ const Personajes = () => {
     fetchDatos();
   }, []);
 
-  if (loading) return <h2>Cargando Personajes...</h2>;
+  if (loading) return <h2>Cargando Frutas del Diablo...</h2>;
 
   return (
     <div>
-      <h1>Listado de Personajes</h1>
+      <h1>Listado de Akuma no Mi</h1>
       <div
         style={{
           display: "grid",
@@ -34,7 +34,7 @@ const Personajes = () => {
       >
         {lista.map((item) => (
           <Link
-            to={`/personajes/${item.id}`}
+            to={`/frutas/${item.id}`}
             key={item.id}
             style={{
               border: "1px solid #ccc",
@@ -45,7 +45,7 @@ const Personajes = () => {
             }}
           >
             <h3>{item.name}</h3>
-            <p>Recompensa: {item.bounty || "???"}</p>
+            <p>Tipo: {item.type}</p>
           </Link>
         ))}
       </div>
@@ -53,4 +53,4 @@ const Personajes = () => {
   );
 };
 
-export default Personajes;
+export default Frutas;
