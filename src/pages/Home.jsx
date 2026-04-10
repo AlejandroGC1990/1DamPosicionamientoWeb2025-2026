@@ -1,69 +1,124 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getPersonajes, getTripulaciones, getFrutas } from "../services/api";
+
+// Función para obtener 'num' elementos aleatorios
+const getRandomItems = (array, num) => {
+  if (!array || array.length === 0) return [];
+  const shuffled = [...array].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, num);
+};
 
 const Home = () => {
-  const [personajes, setPersonajes] = useState([]);
+  const [data, setData] = useState({
+    personajes: [],
+    tripulaciones: [],
+    frutas: [],
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     //Declarar función asíncrona para el Fetch
     const fetchDatos = async () => {
       try {
-        const res = await fetch("https://api.jikan.moe/v4/anime/21/characters");
-        const json = await res.json();
+        // Ejecución en paralelo de las 3 peticiones
+        const [personajesRes, tripulacionesRes, frutasRes] = await Promise.all([
+          getPersonajes(),
+          getTripulaciones(),
+          getFrutas(),
+        ]);
 
-        //La API devuelve los datos dentro de un objeto 'data'. 
-        //Se corta a los 10 primeros.
-        setPersonajes(json.data.slice(0, 10));
-        setLoading(false);
+        // Actualizamos el estado con 3 elementos aleatorios de cada endpoint
+        setData({
+          personajes: getRandomItems(personajesRes, 3),
+          tripulaciones: getRandomItems(tripulacionesRes, 3),
+          frutas: getRandomItems(frutasRes, 3),
+        });
       } catch (error) {
-        console.error("Error al consumir la API: ", error);
+        console.error("Error en la carga inicial: ", error);
+      } finally {
         setLoading(false);
       }
     };
 
     // Ejecutar la llamada
     fetchDatos();
-  }, []); 
-  // El array vacío asegura que la API solo se llame 1 vez al cargar 
-  // la web
+  }, []);
 
   if (loading) return <h2>Cargando Nakamas...</h2>;
 
+  // Estilo reutilizable para los grids
+  const gridStyle = {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+    gap: "1rem",
+    marginBottom: "3rem",
+  };
+
+  const cardStyle = {
+    border: "1px solid #ccc",
+    padding: "1rem",
+    borderRadius: "8px",
+    textDecoration: "none",
+    color: "inherit",
+    display: "block",
+  };
+
   return (
     <div>
-      <h1>Tripulación Destacada (Home)</h1>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "1rem",
-        }}
-      >
-        {/* Mapeo del estado para crear tarjetas dinámicas */}
-        {personajes.map((item) => (
-          <article
-            key={item.character.mal_id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "1rem",
-              borderRadius: "8px",
-            }}
-          >
-            <img
-              src={item.character.images.jpg.image_url}
-              alt={item.character.name}
-              style={{
-                width: "100%",
-                height: "250px",
-                objectFit: "cover",
-                borderRadius: "4px",
-              }}
-            />
-            <h3 style={{ margin: "10px 0 5px" }}>{item.character.name}</h3>
-            <p style={{ margin: 0, color: "#555" }}>Rol: {item.role}</p>
-          </article>
-        ))}
-      </div>
+      <h1>Base de Datos One Piece</h1>
+
+      {/* SECCIÓN PERSONAJES */}
+      <section>
+        <h2>
+          <Link to="/personajes">Explorar Personajes ➔</Link>
+        </h2>
+        <div style={gridStyle}>
+          {data.personajes.map((item) => (
+            <Link to={`/personajes/${item.id}`} key={item.id} style={cardStyle}>
+              {/* Nota: Ajusta 'item.name' o 'item.image' según la clave exacta que devuelva tu API */}
+              <h3 style={{ margin: "0 0 10px" }}>{item.name}</h3>
+              <p style={{ margin: 0, color: "#555" }}>
+                Recompensa: {item.bounty || "Desconocida"}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* SECCIÓN TRIPULACIONES */}
+      <section>
+        <h2>
+          <Link to="/tripulaciones">Explorar Tripulaciones ➔</Link>
+        </h2>
+        <div style={gridStyle}>
+          {data.tripulaciones.map((item) => (
+            <Link
+              to={`/tripulaciones/${item.id}`}
+              key={item.id}
+              style={cardStyle}
+            >
+              <h3 style={{ margin: "0 0 10px" }}>{item.name}</h3>
+              <p style={{ margin: 0, color: "#555" }}>Estado: {item.status}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* SECCIÓN FRUTAS */}
+      <section>
+        <h2>
+          <Link to="/frutas">Explorar Akuma no Mi ➔</Link>
+        </h2>
+        <div style={gridStyle}>
+          {data.frutas.map((item) => (
+            <Link to={`/frutas/${item.id}`} key={item.id} style={cardStyle}>
+              <h3 style={{ margin: "0 0 10px" }}>{item.name}</h3>
+              <p style={{ margin: 0, color: "#555" }}>Tipo: {item.type}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
